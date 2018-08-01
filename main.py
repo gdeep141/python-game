@@ -32,17 +32,18 @@ class Game:
     # new game
     def new(self):
         self.score = 0
-        self.score_boundaries = [400, 600, 800, 1200, 2000, 2800, 3600, 4400, 5200] # game made harder when reaching these scores 
-        self.all_sprites = pg.sprite.Group()          # all sprites to be added to this group
-        self.platforms = pg.sprite.Group()            # all platforms to be added to this group
-        self.num_of_platforms = NUMBER_OF_PLATFORMS   # initial number of platforms in game
+        # game made harder when reaching these scores
+        self.score_boundaries = [400, 600, 800, 1200, 2000, 2800, 3600, 4400, 5200]
+        self.all_sprites = pg.sprite.Group()
+        self.platforms = pg.sprite.Group()
+        self.num_of_platforms = NUMBER_OF_PLATFORMS
         self.player = Player(self)
         self.all_sprites.add(self.player)
         self.initial_platform = Platform(*INITIAL_PLATFORM)
         self.all_sprites.add(self.initial_platform)
         self.platforms.add(self.initial_platform)
-        self.initial_platform.moving_chance = 0       # prevent initial platfrom from moving
-        self.initial_platform.dangerous_chance = 0    # prevent initial platfrom from being dangerous
+        self.initial_platform.moving_chance = 0
+        self.initial_platform.dangerous_chance = 0
         PLATFORMS = []
 
         # add platforms to PLATFORMS list
@@ -52,13 +53,13 @@ class Game:
             PLATFORMS.append(plat)
 
         for plat in PLATFORMS:
-        	p = Platform(*plat)
-        	# make sure none of the initial platforms are dangerous
-        	if p.dangerous_chance == 1:
-        		p.image = pg.image.load(os.path.join('img', 'green_grass_platform.png'))
-        		p.dangerous_chance = 0
-        	self.all_sprites.add(p)
-        	self.platforms.add(p)
+            p = Platform(*plat)
+            # make sure none of the initial platforms are dangerous
+            if p.dangerous_chance == 1:
+                p.image = pg.image.load(os.path.join('img', 'green_grass_platform.png'))
+                p.dangerous_chance = 0
+            self.all_sprites.add(p)
+            self.platforms.add(p)
 
         pg.mixer.music.load(path.join(self.sound_dir, 'playing.ogg'))   # loads gameplay music
         
@@ -128,7 +129,7 @@ class Game:
         self.draw_text(str(self.score), 22, WHITE, WIDTH / 2, 15)
         pg.display.flip()
         
-    #start screen
+    # Start screen
     def show_start_screen(self):
         pg.mixer.music.load(path.join(self.sound_dir, 'menu.ogg'))
         pg.mixer.music.play(loops=-1)
@@ -142,7 +143,7 @@ class Game:
         self.wait_for_key()
         pg.mixer.music.fadeout(200)
 
-    #game over screen
+    # Game over screen
     def show_go_screen(self):
         if not self.running:
             return
@@ -183,12 +184,13 @@ class Game:
         self.screen.blit(text_surface, text_rect)
 
 
-g = Game()
-g.show_start_screen()
+if __name__ == "__main__":
+    g = Game()
+    g.show_start_screen()
 
-# main game loop
-while g.running:
-    g.new()
-    g.show_go_screen()
+    # main game loop
+    while g.running:
+        g.new()
+        g.show_go_screen()
 
-pg.quit() 
+    pg.quit()
