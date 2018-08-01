@@ -19,10 +19,10 @@ class Game:
     # loads high score and sounds
     def load_data(self):
         self.dir = path.dirname(__file__)
-        with open(path.join(self.dir, HS_FILE), 'r') as f:
+        with open(path.join(self.dir, HS_FILE), 'w+') as f:
             try:
                 self.highscore = int(f.read())
-            except:
+            except ValueError:
                 self.highscore = 0
         self.sound_dir = path.join(self.dir, 'sound')    # point sound_dir to sound directory
         self.jump_sound = pg.mixer.Sound(path.join(self.sound_dir, 'jumping.wav'))
