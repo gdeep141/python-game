@@ -40,21 +40,21 @@ class Player(pg.sprite.Sprite):
     def bounce(self):
         hits = pg.sprite.spritecollide(self, self.game.platforms, False)  # collision detection
         for platform in hits:
-            # triggers gameover if platform is dangerous 
-            if platform.dangerous_chance == 1:
-                self.game.death_sound.play()
-                self.game.playing = False
+            # Check player is above platform and falling
+            if self.vel.y > 0 and self.rect.bottom < platform.rect.bottom:
+                if platform.dangerous_chance == 1:
+                    self.game.death_sound.play()
+                    self.game.playing = False
 
-            else:
-                # check player is above platform and falling
-                if self.vel.y > 0 and self.rect.bottom < platform.rect.bottom:
-                    self.rect.bottom = platform.rect.top    # prevent player from clipping through platform
+                else:
+                    # Prevent player from clipping through platform
+                    self.rect.bottom = platform.rect.top
                     
                     if platform.disappear_chance == 1:
                         self.game.blueplat_sound.play()
-                        self.vel.y = -PLAYER_JUMP * MIDDLE_JUMP_FACTOR   # player jumps higher on disappearing platform
-                        platform.kill()   # make platform disappear
-                        self.game.score += 100  # score bonus
+                        self.vel.y = -PLAYER_JUMP * MIDDLE_JUMP_FACTOR   # Player jumps higher on disappearing platform
+                        platform.kill()
+                        self.game.score += 100
                     
                     # bounce higher if in center of platform
                     elif platform.rect.midtop[0] - MIDDLE_TOLERANCE < self.rect.midbottom[0] < platform.rect.midtop[0] + MIDDLE_TOLERANCE:
